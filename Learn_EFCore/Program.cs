@@ -1,5 +1,6 @@
 using Learn_EFCore.Data;
 using Learn_EFCore.Models;
+using Learn_EFCore.Testing;
 using Microsoft.EntityFrameworkCore;
 namespace Learn_EFCore
 {
@@ -18,7 +19,9 @@ namespace Learn_EFCore
             using var context = new AppDbContext(options);
 
             // Seed test data here
-            SeedData(context);
+            //SeedData(context);
+            DbSeeder.SeedTestData(context);
+
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.

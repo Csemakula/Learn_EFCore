@@ -36,11 +36,12 @@
             // 
             jobsDataGridView.AllowUserToAddRows = false;
             jobsDataGridView.AllowUserToDeleteRows = false;
+            jobsDataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             jobsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            jobsDataGridView.Location = new Point(12, 25);
+            jobsDataGridView.Location = new Point(12, 51);
             jobsDataGridView.Name = "jobsDataGridView";
             jobsDataGridView.ReadOnly = true;
-            jobsDataGridView.Size = new Size(776, 413);
+            jobsDataGridView.Size = new Size(776, 387);
             jobsDataGridView.TabIndex = 0;
             // 
             // StartUp

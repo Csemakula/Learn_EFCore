@@ -1,10 +1,14 @@
 using Learn_EFCore.Data;
+using Learn_EFCore.Utility;
+using Learn_EFCore.WinUIMethods;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 namespace Learn_EFCore
 {
     public partial class StartUp : Form
     {
         private readonly AppDbContext _context;
+        private DataTable _dataTable;
         public StartUp(AppDbContext context)
         {
             InitializeComponent();
@@ -26,7 +30,9 @@ namespace Learn_EFCore
                 })
                 .ToList();
 
-            jobsDataGridView.DataSource = jobList;
+            _dataTable = jobList.ToDataTable();
+            jobsDataGridView.DataSource = _dataTable;
+            Customise.CustomiseDataGridView(jobsDataGridView);
         }
 
     }

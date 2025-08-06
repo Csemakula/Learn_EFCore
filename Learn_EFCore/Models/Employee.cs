@@ -10,7 +10,7 @@ namespace Learn_EFCore.Models
     {
         public Guid EmployeeId { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
         public bool Active { get; set; } = true;
 
         public ICollection<Job> AssignedJobs { get; set; } = new List<Job>();

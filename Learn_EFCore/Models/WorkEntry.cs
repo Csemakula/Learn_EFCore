@@ -16,7 +16,7 @@ namespace Learn_EFCore.Models
         public Guid? EmployeeId { get; set; }
         public Employee Employee { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public decimal Hours { get; set; }
         public DateTime PerformedOn { get; set; } = DateTime.UtcNow;
     }
