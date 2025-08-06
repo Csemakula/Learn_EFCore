@@ -18,10 +18,21 @@ namespace Learn_EFCore.Testing
             "Fix Server", "Update Docs", "Deploy App", "Refactor Code", "Test Features", "Write Specs", "Train Team", "Review Logs" };
         private static readonly string[] JobDescriptions = {
             "Urgent task", "Client request", "Scheduled maintenance", "Internal improvement", "Follow-up work", "Compliance-related"};
+        private static readonly string[] WorkDescriptions = {
+        "Initial analysis",
+        "Gathered requirements",
+        "Prepared resources",
+        "Worked on core task",
+        "Reviewed progress",
+        "Performed quality checks",
+        "Completed testing",
+        "Finalized documentation",
+        "Delivered final report"
+        };
 
         public static void SeedTestData(AppDbContext context)
         {
-            if (context.Employees.Any() || context.Jobs.Any())
+            if (context.Employees.Any() || context.Jobs.Any() || context.WorkEntries.Any())
                 return; // Already seeded
 
             var random = new Random();
@@ -52,20 +63,48 @@ namespace Learn_EFCore.Testing
             {
                 var assignedEmployee = employees[random.Next(employees.Count)];
                 var hasDueDate = random.NextDouble() > 0.2;
+                var createdAt = DateTime.UtcNow.AddDays(-random.Next(60));
+                var dueDate = hasDueDate
+                    ? createdAt.AddDays(random.Next(1, 30))
+                    : (DateTime?)null;
 
                 jobs.Add(new Job
                 {
                     JobId = Guid.NewGuid(),
                     Title = JobTitles[random.Next(JobTitles.Length)],
                     Description = JobDescriptions[random.Next(JobDescriptions.Length)],
-                    CreatedAt = DateTime.UtcNow.AddDays(-random.Next(60)),
-                    DueDate = hasDueDate ? DateTime.UtcNow.AddDays(random.Next(1, 30)) : null,
+                    CreatedAt = createdAt,
+                    DueDate = dueDate,
                     Status = (JobStatus)random.Next(0, 3),
                     AssignedToId = assignedEmployee.Active ? assignedEmployee.EmployeeId : null
                 });
             }
 
             context.Jobs.AddRange(jobs);
+            context.SaveChanges();
+
+            // Seed WorkEntries
+            var workEntries = new List<WorkEntry>();
+            foreach (var job in jobs)
+            {
+                int workCount = random.Next(0, 11); // 0 to 10 entries
+                for (int i = 0; i < workCount; i++)
+                {
+                    var worker = employees[random.Next(employees.Count)];
+                    var workDate = job.CreatedAt.AddDays(random.Next(0, 90));
+
+                    workEntries.Add(new WorkEntry
+                    {
+                        WorkEntryId = Guid.NewGuid(),
+                        JobId = job.JobId,
+                        EmployeeId = worker.EmployeeId,
+                        PerformedOn = workDate,
+                        Description = WorkDescriptions[random.Next(WorkDescriptions.Length)],
+                        HoursWorked = (decimal)Math.Round(random.NextDouble() * 8, 2) // up to 8 hours
+                    });
+                }
+            }
+            context.WorkEntries.AddRange(workEntries);
             context.SaveChanges();
         }
     }
