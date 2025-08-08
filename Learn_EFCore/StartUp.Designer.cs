@@ -70,7 +70,7 @@
             allToolStripButton.Name = "allToolStripButton";
             allToolStripButton.Size = new Size(25, 22);
             allToolStripButton.Text = "All";
-            allToolStripButton.Click += allToolStripButton_Click;
+            allToolStripButton.Click += AllToolStripButton_Click;
             // 
             // overDueToolStripButton
             // 
@@ -80,7 +80,7 @@
             overDueToolStripButton.Name = "overDueToolStripButton";
             overDueToolStripButton.Size = new Size(56, 22);
             overDueToolStripButton.Text = "Overdue";
-            overDueToolStripButton.Click += overDueToolStripButton_Click;
+            overDueToolStripButton.Click += OverDueToolStripButton_Click;
             // 
             // unassignedToolStripButton
             // 
@@ -90,7 +90,7 @@
             unassignedToolStripButton.Name = "unassignedToolStripButton";
             unassignedToolStripButton.Size = new Size(72, 22);
             unassignedToolStripButton.Text = "Unassigned";
-            unassignedToolStripButton.Click += unassignedToolStripButton_Click;
+            unassignedToolStripButton.Click += UnassignedToolStripButton_Click;
             // 
             // topEmployeeToolStripButton
             // 
@@ -100,7 +100,7 @@
             topEmployeeToolStripButton.Name = "topEmployeeToolStripButton";
             topEmployeeToolStripButton.Size = new Size(90, 22);
             topEmployeeToolStripButton.Text = "Top Employees";
-            topEmployeeToolStripButton.Click += topEmployeeToolStripButton_Click;
+            topEmployeeToolStripButton.Click += TopEmployeeToolStripButton_Click;
             // 
             // recentToolStripButton
             // 
@@ -110,7 +110,7 @@
             recentToolStripButton.Name = "recentToolStripButton";
             recentToolStripButton.Size = new Size(73, 22);
             recentToolStripButton.Text = "Recent Jobs";
-            recentToolStripButton.Click += recentToolStripButton_Click;
+            recentToolStripButton.Click += RecentToolStripButton_Click;
             // 
             // averageToolStripButton
             // 
@@ -120,7 +120,7 @@
             averageToolStripButton.Name = "averageToolStripButton";
             averageToolStripButton.Size = new Size(89, 22);
             averageToolStripButton.Text = "Average Hours";
-            averageToolStripButton.Click += averageToolStripButton_Click;
+            averageToolStripButton.Click += AverageToolStripButton_Click;
             // 
             // StartUp
             // 

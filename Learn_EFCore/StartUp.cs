@@ -19,67 +19,17 @@ namespace Learn_EFCore
             Load += StartUp_Load;
         }
 
-        /*private void StartUp_Load(object sender, EventArgs e)
-        {
-            var jobList = _context.Jobs
-                .Include(j => j.AssignedTo)
-                .Select(j => new
-                {
-                    j.Title,
-                    j.Description,
-                    j.Status,
-                    j.DueDate,
-                    AssignedTo = j.AssignedTo != null ? j.AssignedTo.Name : "(Unassigned)"
-                })
-                .ToList();
-
-            _bindingSource = new BindingSource
-            {
-                DataSource = jobList.ToDataTable()
-            };
-            jobsDataGridView.DataSource = _bindingSource;
-            Customise.CustomiseDataGridView(jobsDataGridView);
-        }*/
-
         private void StartUp_Load(object sender, EventArgs e)
         {
-            var list = _context.Jobs
-                .Include(j => j.AssignedTo)
-                .Select(j => new
-                {
-                    j.Title,
-                    j.Description,
-                    j.Status,
-                    j.DueDate,
-                    AssignedTo = j.AssignedTo != null ? j.AssignedTo.Name : "(Unassigned)"
-                })
-                .ToList();
-            LoadJobsGrid(list);
+            LoadJobsGrid(GetBaseJobQuery());
             Customise.CustomiseDataGridView(jobsDataGridView);
         }
 
-        /// <summary>
-        /// Base EF Core query for jobs with assigned employee names.
-        /// You can modify this query later for filtering, grouping, etc.
-        /// </summary>
-        private IQueryable<object> GetBaseJobQuery()
-        {
-            return _context.Jobs
-                .Include(j => j.AssignedTo)
-                .Select(j => new
-                {
-                    j.Title,
-                    j.Description,
-                    j.Status,
-                    j.DueDate,
-                    AssignedTo = j.AssignedTo != null ? j.AssignedTo.Name : "(Unassigned)"
-                });
-        }
-
-        private void allToolStripButton_Click(object sender, EventArgs e)
+        private void AllToolStripButton_Click(object sender, EventArgs e)
         {
             var list = JobQueries.GetAllJobs(_context, j => new
             {
+                j.CreatedAt,
                 j.Title,
                 j.Description,
                 j.Status,
@@ -90,10 +40,11 @@ namespace Learn_EFCore
             LoadJobsGrid(list);
         }
 
-        private void overDueToolStripButton_Click(object sender, EventArgs e)
+        private void OverDueToolStripButton_Click(object sender, EventArgs e)
         {
             var list = JobQueries.GetOverdueJobs(_context, j => new
             {
+                j.CreatedAt,
                 j.Title,
                 j.Description,
                 j.Status,
@@ -104,10 +55,11 @@ namespace Learn_EFCore
             LoadJobsGrid(list);
         }
 
-        private void unassignedToolStripButton_Click(object sender, EventArgs e)
+        private void UnassignedToolStripButton_Click(object sender, EventArgs e)
         {
             var list = JobQueries.GetUnassignedJobs(_context, j => new
             {
+                j.CreatedAt,
                 j.Title,
                 j.Description,
                 j.Status,
@@ -118,9 +70,9 @@ namespace Learn_EFCore
             LoadJobsGrid(list);
         }
 
-        private void topEmployeeToolStripButton_Click(object sender, EventArgs e)
+        private void TopEmployeeToolStripButton_Click(object sender, EventArgs e)
         {
-            /*var list = JobQueries.GetTopEmployeesByHours(_context,
+            var list = JobQueries.GetTopEmployeesByHours(_context,
                 g => new
                 {
                     EmployeeName = g.Key,
@@ -129,13 +81,14 @@ namespace Learn_EFCore
                 count: 10 // optional, defaults to 10
             ).ToList();
 
-            LoadJobsGrid(list);*/
+            LoadJobsGrid(list);
         }
 
-        private void recentToolStripButton_Click(object sender, EventArgs e)
+        private void RecentToolStripButton_Click(object sender, EventArgs e)
         {
             var list = JobQueries.GetRecentJobs(_context, j => new
             {
+                j.CreatedAt,
                 j.Title,
                 j.Description,
                 j.Status,
@@ -146,7 +99,7 @@ namespace Learn_EFCore
             LoadJobsGrid(list);
         }
 
-        private void averageToolStripButton_Click(object sender, EventArgs e)
+        private void AverageToolStripButton_Click(object sender, EventArgs e)
         {
             var list = JobQueries.GetOverdueJobs(_context, j => new
             {
@@ -160,13 +113,12 @@ namespace Learn_EFCore
 
         private void LoadJobsGrid<T>(IQueryable<T> query)
         {
-            LoadJobsGrid(query.ToList());
+            var list = query.ToList(); // EF executes here
+            jobsDataGridView.DataSource = null; // Clear previous data source
+            jobsDataGridView.DataSource = list;
         }
 
-        /// <summary>
-        /// Runs the query, converts to DataTable, and binds to the grid.
-        /// </summary>
-        private void LoadJobsGrid<T>(List<T> list)
+        private void LoadJobsTableGrid<T>(List<T> list)
         {
             //var list = query.ToList(); // EF executes here
 
@@ -175,6 +127,32 @@ namespace Learn_EFCore
                 DataSource = list.ToDataTable()
             };
             jobsDataGridView.DataSource = _bindingSource;
+        }
+
+        private void LoadJobsGrid<T>(List<T> list)
+        {
+            //var list = query.ToList(); // EF executes here
+
+            _bindingSource = new BindingSource
+            {
+                DataSource = list
+            };
+            jobsDataGridView.DataSource = _bindingSource;
+        }
+
+        private IQueryable<object> GetBaseJobQuery()
+        {
+            return _context.Jobs
+                .Include(j => j.AssignedTo)
+                .Select(j => new
+                {
+                    j.CreatedAt,
+                    j.Title,
+                    j.Description,
+                    j.Status,
+                    j.DueDate,
+                    AssignedTo = j.AssignedTo != null ? j.AssignedTo.Name : "(Unassigned)"
+                });
         }
     }
 }
